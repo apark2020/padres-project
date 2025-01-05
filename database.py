@@ -15,6 +15,4 @@ df.reset_index(inplace=True)
 with sqlite3.connect('pitchdata.db') as con:
     df.to_sql('pitch_data', con=con, if_exists='replace',dtype={'index':'INTEGER PRIMARY KEY AUTOINCREMENT'})
 
-# with engine.connect() as con:
-#     con.execute('ALTER TABLE pitch_data ADD PRIMARY KEY(id)')
 
