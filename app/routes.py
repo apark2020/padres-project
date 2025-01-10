@@ -19,7 +19,7 @@ def assets(path):
     return send_from_directory('../client/dist', path)
 
 @app.route('/api/pitcher_record/<int:id>', methods=["GET"])
-def player_search(id):
+def pitcher_search(id):
     pitcher_data = db.session.query(PitchData).filter(and_(PitchData.pitcher_bam_id==id, PitchData.is_pitch==True))
     data=[];
     for pitch in pitcher_data:
@@ -47,6 +47,20 @@ def player_search(id):
             'exit_velocity': round(pitch.hit_exit_speed,1) if pitch.hit_exit_speed else None
          })
     return jsonify(sorted(data,key=lambda x: datetime.strptime(x['date'], '%m/%d')));
+
+@app.route('/api/batter_record/<int:id>', methods=["GET"])
+def batter_search(id):
+    batter_data = db.session.query(PitchData).filter(and_(PitchData.batter_bam_id==id, PitchData.in_play==True))
+    data=[];
+    for contact in batter_data:
+        data.append({
+            'launch_angle':contact.hit_vertical_angle,
+            'hit_distance':contact.hit_distance,
+            'exit_velocity':contact.hit_exit_speed,
+            'event_type':contact.event_type,
+            'hit_trajectory':contact.hit_trajectory
+         })
+    return jsonify(data);
     
 @app.route('/api/pitchers', methods=["GET"])
 def return_pitchers():
@@ -101,6 +115,8 @@ def player_pitch_type_data(id):
             'pitch_type':category.pitch_type,
          })
     return jsonify(data);
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

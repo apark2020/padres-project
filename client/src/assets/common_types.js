@@ -44,5 +44,13 @@ export const pitch_types = [
         'abbv':"KN",
         "color":"#8B4513"
     },
-      
   ]
+
+export const trajectory_types=
+  {
+    "ground_ball":"#EB5E55",
+    "fly_ball":"#F4D35E",
+    "line_drive":"#A8D5BA",
+    "popup":"#1C3D71",
+    "bunt_grounder":"#6D4E9C"
+  }

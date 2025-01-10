@@ -1,11 +1,9 @@
 <script lang="ts">
-import {scaleLinear, scaleSequential, scaleDiverging} from 'd3-scale';
+import {scaleLinear, scaleDiverging} from 'd3-scale';
 import {contourDensity} from 'd3-contour';
-import {create, select, selectAll} from 'd3-selection';
+import {select} from 'd3-selection';
 import {geoPath} from 'd3-geo';
-import {interpolateRdBu, schemeRdBu} from 'd3-scale-chromatic';
-import {extent} from 'd3-array';
-import { pitch_types } from '../assets/pitch_types';
+import { pitch_types } from '../assets/common_types';
 
 
 export let width;

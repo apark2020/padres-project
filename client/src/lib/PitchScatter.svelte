@@ -1,6 +1,6 @@
 <script>
 import {scaleLinear, scaleSequential, scaleDiverging} from 'd3-scale';
-import { pitch_types } from '../assets/pitch_types';
+import { pitch_types } from '../assets/common_types';
 import { selectAll } from 'd3-selection'
 
 export let data;

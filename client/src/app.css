@@ -60,3 +60,11 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+nav{
+  margin: 0 auto;
+  margin-bottom: 20px;
+  display: flex;
+  max-width: 300px;
+  justify-content:space-around;
+}
