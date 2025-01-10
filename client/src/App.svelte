@@ -3,14 +3,15 @@
   import Typeahead from "svelte-typeahead";
   import Contour from './lib/Contour.svelte'
   import PitchScatter from './lib/PitchScatter.svelte'
+  import ScatterMovement from './lib/ScatterMovement.svelte';
+  import StrikeZoneGrid from './lib/StrikeZoneGrid.svelte';
+  import { pitch_types } from './assets/pitch_types.js';
 
-  let pitcherList = [];
-  let promise = new Promise(() => {});
-  const extract = (item) => item.first_name + " " + item.last_name;
-
+  const extract = (item) => item.first_name + " " + item.last_name + " (" + item.team + ")";
 
   let searchQuery = $state(null);
   let pitcher_data = $state(null);
+  let current_pitcher;
 
   const getPitchers = async () => {
     const response = await fetch('./api/pitchers');
@@ -19,16 +20,19 @@
       return{
         'id':el.id,
         'first_name':el.first_name,
-        'last_name':el.last_name
+        'last_name':el.last_name,
+        'team':el.team.split(" ").slice(-1)[0]
       }
     })
   }
 
-  export function playerSearch(query){
+  function playerSearch(query){
     event.preventDefault()
+    console.log('player searched');
+    // current_pitcher = query;
     fetch('./api/player_record/'+query)
       .then(d => d.json())
-      .then(d => (pitcher_data = d));
+      .then(d => (pitcher_data = d))
   }
      
 </script>
@@ -38,73 +42,48 @@
     <Typeahead 
       label="Look up a Padres pitcher" 
       data={pitchers} 
+      showDropdownOnFocus
+      limit={5}
       {extract}
       on:select={(e) => {
-        console.log(e.detail.original.id);
         playerSearch(e.detail.original.id);
       }}
      />
   {/await}
-  <!-- <form>
-    <label>
-      Last Name
-      <input bind:value={searchQuery}>
-    </label>
-    <button on:click={() => playerSearch()}>Submit</button>
-  </form> -->
-  <!-- {#if pitcher_data}
-    <table>
-      <thead>
-        <tr>
-          <th>Date</th>
-          <th>Pitches</th>
-        </tr>
-      </thead>
-      {#each pitcher_data as pitcher}
-        <tr>
-          <td>{pitcher.date}</td>
-          <td>{pitcher.pitches}</td>
-        </tr>
-      {/each}
-    </table>
-  {/if} -->
   {#if pitcher_data}
-    <div class='pitch_charts'>
-      <!-- <Scatter data={pitcher_data.filter((d)=>d.pitch_type==='4S')} /> -->
+  <div class='profile'>
+  </div>
+      <div class="comp-container">
+        <h2>Pitch-By-Pitch Data</h2>
         <PitchScatter data={pitcher_data} />
-        <Contour data={pitcher_data} />
-    </div>
+      </div>
+      <div class="comp-container">
+        <h2>Breakdown by Pitch Type</h2>
+        <Contour width={800} height={800} data={pitcher_data}/>
+      </div>
+        <!-- <ScatterMovement data={pitcher_data} {pitch_types}/> -->
+        <!-- <StrikeZoneGrid data={pitcher_data} width={500} height={500} /> -->
+    <!-- </div> -->
   {/if}
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
   input {
       color: black;
   }
+  main{
+    max-width: 100vw;
+  }
   :global([data-svelte-typeahead]) {
     color:black;
+    width:500px;
     :global(input){
       color: black;
     }
+    margin-bottom: 50px;
+  }
+  .comp-container{
+    max-width: 100vw;
   }
   
-  :global(.pitch_charts){
-    display: grid;
-    grid-template-columns: 50% auto;
-  }
 </style>
