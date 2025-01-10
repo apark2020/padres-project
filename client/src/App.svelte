@@ -1,9 +1,9 @@
 <script>
-  import { onMount } from 'svelte';
   import Typeahead from "svelte-typeahead";
   import Contour from './lib/Contour.svelte'
   import PitchScatter from './lib/PitchScatter.svelte'
   import ScatterMovement from './lib/ScatterMovement.svelte';
+  import Barrel from './lib/Barrel.svelte';
   import { pitch_types } from './assets/pitch_types.js';
 
   const extract = (item) => item.first_name + " " + item.last_name + " (" + item.team + ")";
@@ -29,7 +29,7 @@
     event.preventDefault()
     console.log('player searched');
     // current_pitcher = query;
-    fetch('./api/player_record/'+query)
+    fetch('./api/pitcher_record/'+query)
       .then(d => d.json())
       .then(d => (pitcher_data = d))
   }
@@ -39,7 +39,7 @@
 <main>
   {#await getPitchers() then pitchers}
     <Typeahead 
-      label="Look up a Padres pitcher" 
+      label="Look up a Pitcher" 
       data={pitchers} 
       showDropdownOnFocus
       limit={5}
@@ -93,6 +93,7 @@
   }
   .comp-container{
     max-width: 900px;
+    margin-bottom: 15px;
   }
   #border{
     border: 1px solid black;

@@ -127,9 +127,6 @@ function sortPitchesByPitchCount(a,b){
     .contour_collection{
         display: flex;
         justify-content: space-around;
-        /* display: grid;
-        grid-template-columns: auto auto auto; */
-        /* min-height: 900px; */
         color:black;
         flex-wrap: wrap;
         max-width: 100vw;

@@ -37,7 +37,7 @@ export const pitch_types = [
     {
         'name':"Splitter",
         'abbv':"SP",
-        "color":"#FF5AA2"
+        "color":"#CF2A82"
     },
     {
         'name':"Knuckleball",

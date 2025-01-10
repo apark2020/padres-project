@@ -18,7 +18,7 @@ def root():
 def assets(path):
     return send_from_directory('../client/dist', path)
 
-@app.route('/api/player_record/<int:id>', methods=["GET"])
+@app.route('/api/pitcher_record/<int:id>', methods=["GET"])
 def player_search(id):
     pitcher_data = db.session.query(PitchData).filter(and_(PitchData.pitcher_bam_id==id, PitchData.is_pitch==True))
     data=[];
@@ -58,6 +58,19 @@ def return_pitchers():
             'first_name':pitcher.pitcher_name_first,
             'last_name':pitcher.pitcher_name_last,
             'team':pitcher.pitcher_team
+        })
+    return jsonify(data);
+
+@app.route('/api/batters', methods=["GET"])
+def return_batters():
+    batter_list = db.session.execute(select(PitchData.batter_bam_id,PitchData.batter_name_last,PitchData.batter_name_first,PitchData.batter_team).distinct()).all()
+    data = [];
+    for pitcher in batter_list:
+        data.append({
+            'id':pitcher.batter_bam_id,
+            'first_name':pitcher.batter_name_first,
+            'last_name':pitcher.batter_name_last,
+            'team':pitcher.batter_team
         })
     return jsonify(data);
 
