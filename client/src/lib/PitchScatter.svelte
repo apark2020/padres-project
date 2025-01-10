@@ -26,7 +26,7 @@ let filters = {
 
 function changePitch(newValue,type){
     filters[type] = newValue;
-    selectAll('circle')
+    selectAll('.scatter_circles circle')
         .each(function(d){
             let turnedZero = false;
             for(const [filter,value] of Object.entries(filters)){
@@ -68,17 +68,24 @@ function emptyTooltip(){
 }
     
 </script>
+    <div class="pitch_type_key">
+        {#each pitch_types as type}
+                {#if data.find((d)=>d.pitch_type===type.abbv)}
+                <div class ="key_object">
+                    <span class="dot" style={"background-color:"+type.color}></span><span>{type.name}</span>
+                </div>
+                {/if}
+        {/each}
+    </div>
     <div class ="pitch_scatter_container">
         <div class="options">
             <div class="dropdown_container">
                 <div>Pitch Types</div>
                 <select>
                     <option value="all" on:click={()=>{changePitch("all",'pitch_type')}}>All Pitches</option>
-                    <!-- <option value="all">All Pitches</option> -->
                     {#each pitch_types as type}
                         {#if data.find((d)=>d.pitch_type===type.abbv)}
                             <option value={type.name} on:click={()=>{changePitch(type.abbv,'pitch_type')}}>{type.name}</option>
-                            <!-- <option value={type.name}>{type.name}</option> -->
                         {/if}
                     {/each}
                 </select>
@@ -96,6 +103,8 @@ function emptyTooltip(){
                 <div>Pitch Result</div>
                 <select>
                     <option value="all" on:click={()=>{changePitch("all",'ball_call')}}>All Pitches</option>
+                    <option value="in_play" on:click={()=>{changePitch("in_play",'ball_call')}}>Ball in play</option>
+                    <option value="foul" on:click={()=>{changePitch("foul",'ball_call')}}>Foul</option>
                     <option value="all_strikes" on:click={()=>{changePitch("all_strikes", 'ball_call')}}>All Strikes</option>
                     <option value="called_strike" on:click={()=>{changePitch("called_strike", 'ball_call')}}>-----Called Strike</option>
                     <option value="swinging_strike" on:click={()=>{changePitch("swinging_strike", 'ball_call')}}>-----Swinging Strike</option>
@@ -104,7 +113,7 @@ function emptyTooltip(){
             </div>
         </div>
         <svg width={width} height={height}>
-            <g class="circles" on:mouseleave={()=>{emptyTooltip()}}>
+            <g class="scatter_circles" on:mouseleave={()=>{emptyTooltip()}}>
             {#each data as pitch}
                 <circle
                     id={pitch.guid}
@@ -185,10 +194,10 @@ function emptyTooltip(){
         stroke:black;
         stroke-width:1px;
     }
-    .circles:hover circle{
+    .scatter_circles:hover circle{
         opacity:0.1;
     }
-    .circles:hover circle:hover{
+    .scatter_circles:hover circle:hover{
         cursor:pointer;
         stroke: black;
         stroke-width: 2px;
@@ -200,6 +209,26 @@ function emptyTooltip(){
         opacity: 0 !important;
         pointer-events: none;
         cursor: default !important;
+    }
+    .pitch_type_key{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        column-gap: 10px;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+    .dot {
+        height: 12px;
+        width: 12px;
+        border-radius: 50%;
+        display: inline-block;
+        border: 1px solid black;
+    }
+    .key_object{
+        display:flex;
+        align-items: center;
+        column-gap: 3px;
     }
 </style>
 

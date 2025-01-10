@@ -12,8 +12,8 @@ export let width;
 export let height;
 export let data;
 
-
 let pitch_data = null;
+let data_key_order = ["MPH","Spin","SO","Hits","EV","Whiff %","Chase %"]
 
 var margin = {top: 10, right: 30, bottom: 40, left: 50},
     chartWidth = width/3- margin.left - margin.right,
@@ -85,37 +85,31 @@ function sortPitchesByPitchCount(a,b){
     return sum_b-sum_a
 }
 
-    // $: pitch_data = null;
-    $: console.log(data[0].pitcher_id);
     $: pitchDataSearch(data[0].pitcher_id);
-//   $: current_pitcher = data[0].pitcher_id;
-//   $: pitchDataSearch(data[0].pitcher_id);
 </script>
 
 <div class="contour_collection">
-    {#each pitch_types.sort(sortPitchesByPitchCount) as type}
+    {#each pitch_types.sort(sortPitchesByPitchCount) as type, index}
         {@const filtered_data = data.filter((d=>d.pitch_type === type.abbv))}
         {#if filtered_data.length > 0}
         <div class="contour_data_container">
             <div class="contour_header">
-                {type.name}<br>
-                {filtered_data.length} pitches ({Math.round(filtered_data.length/data.length*1000)/10}%)
+                <b>{type.name}</b><br>
+                {filtered_data.length} pitches ({Math.round(filtered_data.length/data.length*1000)/10}%{index===0?' of all pitches':''})
             </div>
             <div class="chart_table_container">
                 <svg use:initContour={filtered_data} width={chartWidth} height={chartHeight} id={"contours_"+type.abbv}>
                 </svg>
                 {#if pitch_data}
                     {@const pitch_averages = pitch_data.find((d)=>d.pitch_type===type.abbv)}
-                    {console.log(pitch_averages)}
-                    {console.log(type.abbv)}
                     <div class="pitch_table">
                         <table>
                             <tbody>
-                                {#each Object.entries(pitch_averages) as [category,value]}
+                                {#each data_key_order as category}
                                     {#if category != 'pitch_type'}
                                     <tr>
                                         <td>{category}</td>
-                                        <td>{value}</td>
+                                        <td>{pitch_averages[category]}</td>
                                     </tr>
                                     {/if}
                                 {/each}
@@ -148,8 +142,10 @@ function sortPitchesByPitchCount(a,b){
         grid-template-columns:50% 50%;
     }
     .pitch_table{
-        margin-top:15px;
-
+        margin-top:10px;
+    }
+    .contour_data_container{
+        margin-bottom: 10px;
     }
 </style>
 

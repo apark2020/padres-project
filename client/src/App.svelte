@@ -4,7 +4,6 @@
   import Contour from './lib/Contour.svelte'
   import PitchScatter from './lib/PitchScatter.svelte'
   import ScatterMovement from './lib/ScatterMovement.svelte';
-  import StrikeZoneGrid from './lib/StrikeZoneGrid.svelte';
   import { pitch_types } from './assets/pitch_types.js';
 
   const extract = (item) => item.first_name + " " + item.last_name + " (" + item.team + ")";
@@ -53,17 +52,20 @@
   {#if pitcher_data}
   <div class='profile'>
   </div>
+  <div class="charts">
       <div class="comp-container">
-        <h2>Pitch-By-Pitch Data</h2>
+        <h2 style="margin-bottom: 10px;">Pitch-by-Pitch Data</h2>
         <PitchScatter data={pitcher_data} />
+      </div>
+      <div class="comp-container" id="border">
+        <h2 style="margin-bottom: 5px;">Pitch Movement</h2>
+        <ScatterMovement data={pitcher_data} {pitch_types}/>
       </div>
       <div class="comp-container">
         <h2>Breakdown by Pitch Type</h2>
         <Contour width={800} height={800} data={pitcher_data}/>
       </div>
-        <!-- <ScatterMovement data={pitcher_data} {pitch_types}/> -->
-        <!-- <StrikeZoneGrid data={pitcher_data} width={500} height={500} /> -->
-    <!-- </div> -->
+  </div>
   {/if}
 </main>
 
@@ -82,8 +84,18 @@
     }
     margin-bottom: 50px;
   }
+  .charts{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    /* column-gap: 20px; */
+    /* row-gap: 20px; */
+  }
   .comp-container{
-    max-width: 100vw;
+    max-width: 900px;
+  }
+  #border{
+    border: 1px solid black;
   }
   
 </style>

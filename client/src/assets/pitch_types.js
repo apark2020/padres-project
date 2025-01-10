@@ -32,17 +32,17 @@ export const pitch_types = [
     {
         'name':"Cutter",
         'abbv':"CT",
-        "color":"#1C3D71"
+        "color":"#006D5B"
     },
     {
         'name':"Splitter",
         'abbv':"SP",
-        "color":"#800000"
+        "color":"#FF5AA2"
     },
     {
         'name':"Knuckleball",
         'abbv':"KN",
-        "color":"#FF5AA2"
+        "color":"#8B4513"
     },
       
   ]

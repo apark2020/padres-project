@@ -39,7 +39,7 @@ def player_search(id):
             'batter_side':pitch.batter_side,
             'rel_speed':round(pitch.rel_speed,1),
             'guid':pitch.guid,
-            'ball_call':"ball" if pitch.ball else ("swinging_strike" if pitch.swinging_strike else "called_strike"),
+            'ball_call':"foul" if pitch.foul else ("in_play" if pitch.in_play else("ball" if pitch.ball else ("swinging_strike" if pitch.swinging_strike else "called_strike"))),
             'batter_name':pitch.batter_name_first + " " + pitch.batter_name_last,
             'pitch_result':pitch.pitch_result,
             'description':pitch.description,
@@ -71,12 +71,15 @@ def player_pitch_type_data(id):
                                         func.avg(PitchData.spin_rate).label('Spin'),
                                         func.sum(case((or_(PitchData.event_type == "single",PitchData.event_type == "double",PitchData.event_type == "triple",PitchData.event_type == "home_run"), 1), else_=0)).label('Hits'),
                                         func.sum(PitchData.swing).label('swings'),
-                                        func.sum(PitchData.swinging_strike).label('whiffs')
+                                        func.sum(PitchData.swinging_strike).label('whiffs'),
+                                        func.sum(PitchData.chase).label('chases'),
+                                        func.sum(case((PitchData.in_zone,0), else_=1)).label('out_zone')
                                         ).where((PitchData.pitcher_bam_id==id)&(PitchData.is_pitch)).group_by(PitchData.pitch_type)).all()
     data=[];
     for category in pitcher_data:
          data.append({
-            'Whiff':'N/A' if (category.swings is None or category.swings == 0) else (0 if (category.whiffs is None or category.whiffs == 0) else round(100*category.whiffs/category.swings,1)),
+            'Chase %': 'N/A' if (category.out_zone is None or category.out_zone == 0) else (0 if (category.chases is None or category.chases == 0) else round(100*category.chases/category.out_zone,1)),
+            'Whiff %':'N/A' if (category.swings is None or category.swings == 0) else (0 if (category.whiffs is None or category.whiffs == 0) else round(100*category.whiffs/category.swings,1)),
             'Spin':int(category.Spin),
             'Hits':category.Hits,
             'SO':category.SO,
