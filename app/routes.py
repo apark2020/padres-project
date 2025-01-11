@@ -88,6 +88,21 @@ def return_batters():
         })
     return jsonify(data);
 
+@app.route('/api/batter_discipline/<int:id>', methods=["GET"])
+def batter_discipline(id):
+    discipline_data = db.session.query(PitchData).filter((PitchData.batter_bam_id==id))
+    data=[];
+    for instance in discipline_data:
+        data.append({
+            'plate_x':instance.plate_x,
+            'plate_z':instance.plate_z,
+            'swinging_strike':instance.swinging_strike,
+            'swing': instance.swing,
+            'contact': instance.contact
+        })
+    return jsonify(data);
+
+
 @app.route('/api/player_pitch_data/<int:id>', methods=["GET"])
 def player_pitch_type_data(id):
     pitcher_data = db.session.execute(select(
@@ -116,38 +131,5 @@ def player_pitch_type_data(id):
          })
     return jsonify(data);
 
-
-
 if __name__ == "__main__":
     app.run(debug=True)
-
-'''
-Pitcher page
-- Game logs (Game, pitches, innings pitched, SOs, BBs, other counting stats) 
-- Pitch mix (heatmap/scatterplot, contact/whiff rate, average velo, movement) (GROUP BY pitch_type)
-    - ball position: plate_x, plate_z
-    - whiff rate = whiff/swings
-    - chase rate = chased/balls outside zone (!in_zone)
-    - spin_rate, induced_horiz_break, induced_vert_break
-- PERHAPS a batted ball profile
-'''
-#pitch mix (maybe heatmap, contact/swing rate, average velo, movement (rise/drop, horizontal), batted ball profile)
-#pitch effectiveness after inning/balls pitched/some time measure
-#pitcher vs batter matchup? limited dataset though
-'''
-How to get individual pitch video
-- pull guid
-- https://baseballsavant.mlb.com/sporty-videos?playId=<guid from play>
-- scrape the video URL from the page
-Strike zone: https://umpscorecards.com/explainers/true_strike_zone; strikezone_top, strikezone_bottom
-'''
-#
-
-
-# @app.route('/pitch-mix')
-# def pitch_mix():
-#     return render_template()
-
-# @app.route('/heatmap')
-# def heatmap():
-#     return render_template()

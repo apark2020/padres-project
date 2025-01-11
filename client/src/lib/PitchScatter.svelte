@@ -5,9 +5,9 @@ import { selectAll } from 'd3-selection'
 
 export let data;
 
-var margin = {top: 10, right: 30, bottom: 40, left: 50},
-    width = 300,
-    height = 360;
+var margin = {top: 0, right: 20, bottom: 40, left: 20},
+    width = 340,
+    height = 400;
 
 var scaleY = scaleLinear([5.5,-1.7],[margin.bottom,height-margin.top]);
 var scaleX = scaleLinear([-3,3],[margin.left,width-margin.right]);
@@ -49,7 +49,6 @@ function changePitch(newValue,type){
 
 function fillTooltip(guid){
     const pitch = data.find((d)=>d.guid === guid);
-    console.log(pitch.pitch_result);
     tooltipInfo = {
         'guid':guid,
         'desc':pitch.description ? pitch.description.split(".")[0] : null,
@@ -134,7 +133,7 @@ function emptyTooltip(){
             <!-- strikezone -->
             <rect 
                 width={getLength(1.7,scaleX)}
-                height={getLength(1.9,scaleY)}
+                height={getLength(2.1,scaleY)}
                 x={scaleX(-0.85)}
                 y={scaleY(3.6)}
                 fill=none

@@ -34,8 +34,8 @@ function getLength(length,scale){
 
     <div class="barrel-container">
         <div class="arrow-legend">
-            {#each Object.entries(trajectory_types) as [type,color]}
-                <div><span style={"color:"+color+"; font-weight: bold; font-size: 20px; fill:"+color}>&uarr;</span> {type}</div>
+            {#each Object.entries(trajectory_types) as [type,values]}
+                <div><span style={"color:"+values.color+"; font-weight: bold; font-size: 20px; margin-right: 5px;"+values.color}>&uarr;</span>{values.title}</div>
             {/each}
         </div>
         <svg width={width} height={height}>
@@ -49,7 +49,7 @@ function getLength(length,scale){
                 refX='0.1' 
                 refY='2'
                 >
-                <path d='M0,0 V4 L2,2 Z' fill={trajectory_types['ground_ball']} />
+                <path d='M0,0 V4 L2,2 Z' fill={trajectory_types['ground_ball'].color} />
                 </marker>
                 <marker 
                 id='arrow_fly_ball' 
@@ -59,7 +59,7 @@ function getLength(length,scale){
                 refX='0.1' 
                 refY='2'
                 >
-                <path d='M0,0 V4 L2,2 Z' fill={trajectory_types['fly_ball']} />
+                <path d='M0,0 V4 L2,2 Z' fill={trajectory_types['fly_ball'].color} />
                 </marker>
                 <marker 
                 id='arrow_line_drive' 
@@ -69,7 +69,7 @@ function getLength(length,scale){
                 refX='0.1' 
                 refY='2'
                 >
-                <path d='M0,0 V4 L2,2 Z' fill={trajectory_types['line_drive']} />
+                <path d='M0,0 V4 L2,2 Z' fill={trajectory_types['line_drive'].color} />
                 </marker>
                 <marker 
                 id='arrow_popup' 
@@ -79,7 +79,7 @@ function getLength(length,scale){
                 refX='0.1' 
                 refY='2'
                 >
-                <path d='M0,0 V4 L2,2 Z' fill={trajectory_types['popup']} />
+                <path d='M0,0 V4 L2,2 Z' fill={trajectory_types['popup'].color} />
                 </marker>
                 <marker 
                 id='arrow_bunt_grounder' 
@@ -89,7 +89,7 @@ function getLength(length,scale){
                 refX='0.1' 
                 refY='2'
                 >
-                <path d='M0,0 V4 L2,2 Z' fill={trajectory_types['bunt_grounder']} />
+                <path d='M0,0 V4 L2,2 Z' fill={trajectory_types['bunt_grounder'].color} />
                 </marker>
             </defs>
 
@@ -115,7 +115,7 @@ function getLength(length,scale){
                     <path d={"M"+scaleX(0)+" "+scaleY(0)+" L"+(scaleX(Math.cos(angle)*contact.exit_velocity))+" "+(scaleY((Math.sin(angle)*contact.exit_velocity)))} 
                         class = "hit-arrow"
                         marker-end={'url(#arrow_'+contact.hit_trajectory+')'}
-                        stroke={trajectory_types[contact.hit_trajectory]}
+                        stroke={trajectory_types[contact.hit_trajectory].color}
                         stroke-width={4}
                         opacity=0.6
                         ></path>
@@ -139,9 +139,6 @@ function getLength(length,scale){
             fill: red;
             /* stroke: red; */
             opacity: 0.1;
-        }
-        .hit-arrow:hover{
-            opacity:1;
         }
         .dot {
         height: 12px;

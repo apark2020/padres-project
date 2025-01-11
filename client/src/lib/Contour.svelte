@@ -64,7 +64,7 @@ function createContours(data,cont_id){
 
     group.append("rect")
     .attr("width",getLength(1.7,scaleX))
-    .attr("height", getLength(1.9,scaleY))
+    .attr("height", getLength(2.1,scaleY))
     .attr("x", scaleX(-0.85))
     .attr("y", scaleY(3.6))
     .attr("fill", 'none')

@@ -48,9 +48,9 @@ export const pitch_types = [
 
 export const trajectory_types=
   {
-    "ground_ball":"#EB5E55",
-    "fly_ball":"#F4D35E",
-    "line_drive":"#A8D5BA",
-    "popup":"#1C3D71",
-    "bunt_grounder":"#6D4E9C"
+    "ground_ball":{color: "#EB5E55", "title": 'Ground ball'},
+    "fly_ball":{color: "#F4D35E", "title": "Fly ball"},
+    "line_drive":{"color":"#A8D5BA","title":"Line drive"},
+    "popup":{"color":"#1C3D71", "title":"Pop-up"},
+    "bunt_grounder":{"color":"#6D4E9C", "title":"Bunt grounder"}
   }

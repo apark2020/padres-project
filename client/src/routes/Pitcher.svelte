@@ -24,7 +24,6 @@
   
     function playerSearch(query){
       event.preventDefault()
-      console.log('player searched');
       fetch('./api/pitcher_record/'+query)
         .then(d => d.json())
         .then(d => (pitcher_data = d))
@@ -34,14 +33,14 @@
 
 <nav>
 	<a href="/">Home</a>
-	<a href="/#/pitcher">Pitcher</a>
-	<a href="/#/batter">Batter</a>
+	<a href="/#/pitcher">Pitcher Analysis Tool</a>
+	<a href="/#/batter">Batter Analysis Tool</a>
 </nav>
   
   <main>
     {#await getPitchers() then pitchers}
       <Typeahead 
-        label="Look up a Pitcher" 
+        label="Type in a name" 
         data={pitchers} 
         showDropdownOnFocus
         limit={5}
